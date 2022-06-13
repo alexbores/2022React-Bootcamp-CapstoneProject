@@ -12,9 +12,9 @@ export default function Header(){
     
     const [smallMenu,setSmallMenu] = useState(false);
     const menu = [
-       {name:"home",href:"/"},
-       {name:"store",href:"/"},
-       {name:"categories",href:"/"},
+       {name:"Home",href:"/"},
+       {name:"Store",href:"/"},
+       {name:"Categories",href:"/"},
     ];
     
     function Option({data}){
