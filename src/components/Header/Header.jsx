@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import {Menu, SmallMenu} from './Header.styled';
 
@@ -11,8 +11,17 @@ import {ReactComponent as CloseIcon} from '../../assets/close.svg';
 export default function Header(){
     
     const [smallMenu,setSmallMenu] = useState(false);
+    const menu = [
+       {name:"home",href:"/"},
+       {name:"store",href:"/"},
+       {name:"categories",href:"/"},
+    ];
     
-    useEffect(()=>{console.log(smallMenu)},[smallMenu]);
+    function Option({data}){
+        return (
+           <p className="option mL30 hideSm txtS3"><a href={data.href}>{data.name}</a></p>
+        );
+    }
 
 	return (
        <>
@@ -23,9 +32,9 @@ export default function Header(){
        		</div>
 
        		<div className="options wFull flxR flxNoWrap ordE itmC">
-       			<p className="option mL30 hideSm txtS3"><a href="/">Home</a></p>
-       			<p className="option mL30 hideSm txtS3"><a href="/">Store</a></p>
-       			<p className="option mL30 hideSm txtS3"><a href="/">Categories</a></p>
+                {menu?.map(m=>{
+                    return <Option key={m.href} data={m} />
+                })}
                 
                 <div className="option mL35 searchIcon">
        				<SearchIcon className="s30 s25Xs" />
@@ -60,9 +69,9 @@ export default function Header(){
 
                <div className="wFull lineH mT20 mB20" />
                
-               <p className="option colorWhite mT20 txtS3"><a href="/">Home</a></p>
-               <p className="option colorWhite mT20 txtS3"><a href="/">Store</a></p>
-               <p className="option colorWhite mT20 txtS3"><a href="/">Categories</a></p>
+               {menu?.map(m=>{
+                    return <Option key={m.href} data={m} />
+                })}
                
                <div className="wFull lineH mT20 mB5" />
 

@@ -16,8 +16,8 @@ export default function ProductsList({products,title}){
         </div>
        }
        <div className="content fullContent pT40 flxR flxGrd">
-         {products.map(b=>{
-           return <ProductCard key={b.id} data={b} />
+         {products.map(product=>{
+           return <ProductCard key={product.id} data={product} />
           })}
        </div>
      </ProductsHolder>

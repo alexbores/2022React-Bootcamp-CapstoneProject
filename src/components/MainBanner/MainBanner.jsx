@@ -22,10 +22,10 @@ export default function MainBanner({banners}){
          modules={[Pagination]}
          className="mySwiper"
        >
-         {banners.map(b=>{
-          return <SwiperSlide key={b.id}>
-                     <img src={b.data.main_image?.url} 
-                          alt={b.data.main_image?.title} />
+         {banners?.map(banner=>{
+          return <SwiperSlide key={banner?.id}>
+                     <img src={banner?.data?.main_image?.url} 
+                          alt={banner?.data?.main_image?.title} />
                  </SwiperSlide>
          })}
        </Swiper>

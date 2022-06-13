@@ -34,11 +34,11 @@ export default function CardSlider({cards,title}){
                slidesPerView: 4.6,
              },
            }}>
-           {cards.map(b=>{
-            return <SwiperSlide key={b.id}>
-                       <img src={b.data.main_image?.url} 
-                            alt={b.data.main_image?.title} />
-                       <h4 className="txtC">{b.data.name}</h4>
+           {cards?.map(card=>{
+            return <SwiperSlide key={card.id}>
+                       <img src={card?.data?.main_image?.url} 
+                            alt={card?.data?.main_image?.title} />
+                       <h4 className="txtC">{card?.data?.name}</h4>
                    </SwiperSlide>
            })}
          </Swiper>

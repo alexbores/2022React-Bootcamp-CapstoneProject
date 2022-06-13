@@ -9,18 +9,17 @@ import ProductsList from '../../components/ProductsList/ProductsList';
 
 export default function Home({data}){
 
-    
-    console.log(data);
+   
 
 	return (
 
        <section className="home">
        	  
-       	  <MainBanner banners={data?.featureBanners.results} />
+       	  <MainBanner banners={data?.featureBanners?.results} />
           
-          <CardSlider  cards={data?.categories.results} title='Categories' />
+          <CardSlider  cards={data?.categories?.results} title='Categories' />
 
-          <ProductsList products={data?.featureProducts.results} title='Best Buys' />
+          <ProductsList products={data?.featureProducts?.results} title='Best Buys' />
        	  
 
        </section>
