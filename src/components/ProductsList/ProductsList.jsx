@@ -12,13 +12,15 @@ export default function ProductsList({products,title,categories}){
   // console.log(categories);
   // console.log(products);
 
-  const [allProds, setAllProds] = useState([...products.results]);
+  const [allProds, setAllProds] = useState([]);
   const [selectedCats, setSelectedCats] = useState([]);
 
   useEffect(()=>{
-    let tempAllProds = [...allProds];
-    tempAllProds?.forEach(p=>p.selected = true);
+    let tempAllProds = [...products.results];
+    tempAllProds.forEach(p=>p.selected = true);
     setAllProds(tempAllProds);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   
  
