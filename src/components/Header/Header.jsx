@@ -8,18 +8,18 @@ import {ReactComponent as MenuIcon} from '../../assets/menu.svg';
 import {ReactComponent as CloseIcon} from '../../assets/close.svg';
 
 
-export default function Header(){
+export default function Header({nav}){
     
     const [smallMenu,setSmallMenu] = useState(false);
     const menu = [
-       {name:"Home",href:"/"},
-       {name:"Store",href:"/"},
-       {name:"Categories",href:"/"},
+       {name:"Home",path:""},
+       {name:"Store",path:"all-products"},
+       {name:"Categories",path:"/"},
     ];
     
     function Option({data}){
         return (
-           <p className="option mL30 hideSm txtS3"><a href={data.href}>{data.name}</a></p>
+           <p className="option mL30 txtS3 cursor" onClick={()=>{nav(data.path)}}>{data.name}</p>
         );
     }
 
@@ -28,12 +28,13 @@ export default function Header(){
        <Menu className="fixedFull fixedC fixed z5">
        	<div className="content fullContent flxR ordC flxNoWrap">
        		<div className="logoHolder flxR ordS itmC">
-       		   <h1 className="logo txtS2 txtS3Sm">Alex's <span>WorkShop</span></h1>
+       		   <h1 className="logo txtS2 txtS3Sm" 
+                   onClick={()=>{nav('')}}>Alex's <span>WorkShop</span></h1>
        		</div>
 
        		<div className="options wFull flxR flxNoWrap ordE itmC">
                 {menu?.map(m=>{
-                    return <Option key={m.href} data={m} />
+                    return <Option key={m.path+m.name} data={m} />
                 })}
                 
                 <div className="option mL35 searchIcon">
@@ -55,7 +56,7 @@ export default function Header(){
        <SmallMenu className="fixed z20 posT colorBBlack anim3 hFullvh" open={smallMenu}>
          <div className="scroll hFull wFull pT20 pB40">
      
-            <div className="flxC itemsE hAuto wFull pR pL20">
+            <div className="flxC itmE hAuto wFull pR pL20">
                
                <div className="wFull flxR ordE">
                   
@@ -70,14 +71,12 @@ export default function Header(){
                <div className="wFull lineH mT20 mB20" />
                
                {menu?.map(m=>{
-                    return <Option key={m.href} data={m} />
+                    return <Option key={m.path+m.name+2} data={m} />
                 })}
                
                <div className="wFull lineH mT20 mB5" />
 
                
-                 
-              
                
             </div>
 

@@ -29,7 +29,17 @@ export const Menu = styled.section`
     		right: 0;
     	}
     }
+
   }
+
+  @media screen and (max-width:630px){
+    .options{
+      p.option{
+        display:none;
+      }
+    }
+  }
+
 
 
 `;
@@ -48,7 +58,13 @@ export const SmallMenu = styled.section`
    opacity: 0.5;
    height: 2px;
   }
-
+  
+  
+  p.option{
+      color:white;
+      font-size: var(--mnr-fontS3);
+      margin-bottom: 20px;
+  }
 
 
 `;
