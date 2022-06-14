@@ -11,7 +11,7 @@ export default function Products({data}){
 
        <section className="products">
        	  <div className="content fullContent colorBBlack hMin200 flxC ordC">
-       	    <h1 className="txtC colorWhite">This is the Product List Page</h1>
+       	    <h1 className="txtC colorWhite">All Products</h1>
           </div>
           
           <ProductsList products={data?.products} categories={data?.categories?.results}  />
