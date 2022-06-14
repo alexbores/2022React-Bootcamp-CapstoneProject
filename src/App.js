@@ -26,7 +26,7 @@ function App() {
   const [pageLoader,setPageLoader] = useState(2);
 
   useEffect(()=>{
-    nav('all-products');
+    nav('');
   },[]);
 
 
