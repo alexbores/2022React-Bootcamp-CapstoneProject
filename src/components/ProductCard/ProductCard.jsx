@@ -6,10 +6,13 @@ import {ReactComponent as HeartFillIcon} from '../../assets/corazonFill.svg';
 
 
 export default function ProductsList({data}){
-  // console.log(data);
+  // console.log(data.tags.map());
+  
+  
 
 	return (
-     <ProductHolder className="flxCell3 flxCell4Md flxCell6Sm round6 p20 pL5Xs pR5Xs pB10Xs">
+     <ProductHolder className="productCard round6 p20 pL5Xs pR5Xs pB10Xs">
+       {/*<p className="txtC">{data?.tags.map(m=>m+', ')}</p>*/}
        <p className="txtC">{data?.data?.category?.slug}</p>
        <div className="imgHolder rltv">
          <img 

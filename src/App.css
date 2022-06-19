@@ -42,7 +42,7 @@
        --mnr-padSidesXs: 15px; 
        
 
-       --mnr-fontS1: 59px;
+       --mnr-fontS1: 40px;
        --mnr-fontS2: 37px;
        --mnr-fontS3: 20px;
        --mnr-fontS4: 16px; /*regular*/
@@ -174,6 +174,7 @@
      legend,
      textarea, 
      input,
+     button,
      select,
      label,
      div,
@@ -334,6 +335,7 @@
        border-radius: var(--mnr-inputRadius);
        width: 100%;
        color: var(--mnr-inputTextColor);
+       font-size: var(--mnr-fontS4);
      }
      input, textarea, .selectable{
      
