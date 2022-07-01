@@ -2,11 +2,13 @@ import React from 'react';
 
 import {PageLoaderHolder} from './PageLoader.styled';
 
-export default function PageLoader({show}){
+export default function PageLoader({show,fixed}){
 
 	return (
 
-       <PageLoaderHolder className="anim3 posT posL fixedFull fixed wFull hFull flxC ordC zMax" show={show}>
+       <PageLoaderHolder 
+          className={((!!fixed)? 'posT posL fixedFull fixed': 'absS' ) + " anim3 wFull hFull flxC ordC zMax"} 
+          show={show}>
           <div className="holder">
        	    <div className="spinner load3" />
        	  </div>

@@ -3,6 +3,11 @@ import { createGlobalStyle } from "styled-components/macro"
 
 
 export default createGlobalStyle`
+
+    main.loading{
+        max-height:100vh;
+        overflow:hidden;
+    }
     ////////////miscell
     .backShadow::before{
       content:  "";

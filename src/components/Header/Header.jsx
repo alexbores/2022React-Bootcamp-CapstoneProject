@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 
-import {Menu, SmallMenu} from './Header.styled';
+import {Menu, SmallMenu, SearchMenu} from './Header.styled';
+
+import SearchBar from '../SearchBar/SearchBar';
 
 import {ReactComponent as CartIcon} from '../../assets/cart.svg';
 import {ReactComponent as SearchIcon} from '../../assets/search.svg';
@@ -11,9 +13,11 @@ import {ReactComponent as CloseIcon} from '../../assets/close.svg';
 export default function Header({nav}){
     
     const [smallMenu,setSmallMenu] = useState(false);
+    const [searchMenu,setSearchMenu] = useState(false);
+
     const menu = [
-       {name:"Home",path:""},
-       {name:"Store",path:"all-products"},
+       {name:"Home",path:"/"},
+       {name:"Store",path:"products"},
        {name:"Categories",path:"/"},
     ];
     
@@ -29,7 +33,7 @@ export default function Header({nav}){
        	<div className="content fullContent flxR ordC flxNoWrap">
        		<div className="logoHolder flxR ordS itmC">
        		   <h1 className="logo txtS2 txtS3Sm" 
-                   onClick={()=>{nav('')}}>Alex's <span>WorkShop</span></h1>
+                   onClick={()=>{nav('/')}}>Alex's <span>WorkShop</span></h1>
        		</div>
 
        		<div className="options wFull flxR flxNoWrap ordE itmC">
@@ -38,19 +42,19 @@ export default function Header({nav}){
                 })}
                 
                 <div className="option mL35 searchIcon">
-       				<SearchIcon className="s30 s25Xs" />
+       				<SearchIcon className="s30 s25Xs cursor" onClick={()=>{setSearchMenu(!searchMenu)}}/>
        			</div>
        			<div className="option mL30 mL20Xs cartIcon rltv">
-       				<CartIcon className="s30 s25Xs" />
+       				<CartIcon className="s30 s25Xs  cursor" />
        				<p className="flxC ordC num abs mAuto s15 txtS6 colorTWhite colorBBlack  round">1</p>
        			</div>
        			<div className="option mL30 mL20Xs menuIcon showSm">
-       				<MenuIcon className="s30 s25Xs" onClick={()=>{setSmallMenu(!smallMenu)}}/>
+       				<MenuIcon className="s30 s25Xs  cursor" onClick={()=>{setSmallMenu(!smallMenu)}}/>
        			</div>
        		</div>
        	</div>
        </Menu>
-       {(smallMenu) &&
+       {(smallMenu || searchMenu) &&
          <div className="wFull hFull posT posL backShadow z10 fixed fixedFull" />
        }
        <SmallMenu className="fixed z20 posT colorBBlack anim3 hFullvh" open={smallMenu}>
@@ -82,6 +86,20 @@ export default function Header({nav}){
 
          </div>
        </SmallMenu>
+
+       <SearchMenu open={searchMenu} className="z20 posT anim3 flxC ordC">
+           <div className="contentHolder flxC itmC wFull p20">
+              <div className="wFull flxR ordE">
+                 <div className="flxC ordC closeBtn size30 z2 cursor iconHover" 
+                      onClick={()=>{setSearchMenu(!searchMenu)}} >
+                      <CloseIcon className="s30 s25Xs colorSvgBlack" />
+                 </div>
+              </div>
+              <p className="txtC txtS2 mT10 mB20 fontTitle">Search:</p>
+              <SearchBar  nav={nav} callback={()=>{setSearchMenu(false)}}/>
+           </div>
+           
+       </SearchMenu>
        <div className="h80" />
        </>
 	);

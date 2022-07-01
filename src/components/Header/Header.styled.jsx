@@ -68,3 +68,26 @@ export const SmallMenu = styled.section`
 
 
 `;
+
+export const SearchMenu = styled.section`
+  
+  
+  top: ${props => props.open ? 0 : "-120vh"};
+  
+  
+  
+  
+  height: 100vh;
+  left: 0;
+  position: fixed;
+  margin:auto;
+  
+  .contentHolder{
+    width: clamp(300px,90vw,700px);
+    background-color: var(--mnr-colorWhite);
+    height: clamp(200px, 65vh, 300px);
+    border-radius: 3px;
+  }
+
+`;
+

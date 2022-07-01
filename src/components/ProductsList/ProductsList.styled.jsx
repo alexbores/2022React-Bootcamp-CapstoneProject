@@ -41,16 +41,7 @@ export const ProductsHolder = styled.section`
       width: calc(${ props => props.hasCat ? '33.33%' : '25%'  } - (var(--mnr-gutter)));
    }
 
-   .pag button{
-      height: 50px;
-      width: 50px;
-      min-height: 50px;
-      min-width: 50px;
-      svg{
-         width: 50%;
-         height: 50%;
-      }
-   }
+   
 
    @media screen and (max-width:960px){
       .productCard{
