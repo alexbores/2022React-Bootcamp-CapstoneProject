@@ -124,13 +124,17 @@ function App() {
 
   
   function addCart(data){
+    console.log(data);
      let tempData = [...cart];
      let found = false;
-     console.log(data);
      if(data?.id){
+       
        tempData.map(p => {
          if(p.id === data.id){
            p.qty = parseInt(p.qty) + parseInt(data.qty);
+           if(p.qty > p.stock){
+             p.qty = p.stock;
+           }
            found = true;
          }
        });
@@ -141,16 +145,21 @@ function App() {
      setCart(tempData);
   }
 
-  useEffect(()=>{
-    console.log(cart);
-  },[cart]);
-  // function removeCart(data){
-  //    tempData = [...cart];
-  //    if(data.id){
-
-  //    }
-  //    setCart(tempData);
-  // }
+  // useEffect(()=>{
+  //   console.log(cart);
+  // },[cart]);
+  function removeCart(id){
+     let tempData = [...cart];
+     if(id){
+       
+       setCart(tempData.filter(p => {
+         if(p.id === id){
+          return false;
+         }
+         return true;
+       }));
+     }
+  }
 
   return (
     <>
@@ -169,7 +178,7 @@ function App() {
           <Route path="products" element={<Products addCart={addCart} getLink={getLink} categories={dataCategories} nav={nav} />}/>
           <Route path="product/:id" element={<Product addCart={addCart} nav={nav} products={dataFeaturedProducts} />}/>
           <Route path="search" element={<Search addCart={addCart} nav={nav} getLink={getLink} />} />
-          <Route path="cart" element={<Cart cart={cart} nav={nav} getLink={getLink} />} />
+          <Route path="cart" element={<Cart cart={cart} addCart={addCart} removeCart={removeCart} nav={nav} getLink={getLink} />} />
           <Route path="*" element={<h2 className="txtC txtS1 pT80 pB80">404</h2>} />
         </Routes> 
       </main>

@@ -21,7 +21,7 @@ export default function Product({nav,products,addCart}){
       stk: 0,
       name: '',
       id: null,
-      imgs: null,
+      img: null,
    });
    const qtyRef = useRef();
 
@@ -38,7 +38,7 @@ export default function Product({nav,products,addCart}){
      tempSell.price = temp?.data?.price;
      tempSell.stk = temp?.data?.stock;
      tempSell.name = temp?.data?.name;
-     tempSell.imgs = temp?.data?.images;
+     tempSell.img = temp?.data?.images[0];
      tempSell.id = temp?.id;
 
      setProductInfo(temp);
@@ -94,7 +94,7 @@ export default function Product({nav,products,addCart}){
 
 
                 <button className="button colorBBlack colorWhite mT40 wMax300" 
-                        onClick={()=>{addCart(sellInfo)}}>Add To Cart</button>
+                        onClick={()=>{addCart(sellInfo); nav('cart')}}>Add To Cart</button>
 
 
                 

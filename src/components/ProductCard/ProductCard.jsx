@@ -5,7 +5,7 @@ import {ReactComponent as CartIcon} from '../../assets/cart.svg';
 
 
 
-export default function ProductCard({data,nav}){
+export default function ProductCard({data,nav,addCart}){
   // console.log(data.tags.map());
   
   // console.log(data);
@@ -27,7 +27,19 @@ export default function ProductCard({data,nav}){
        <h3 className="txtC txtS4 pB5">{data?.data?.name}</h3>
        <p className="price txtS3 txtC">$ {data?.data?.price}</p>
        <div className="buttonsHolder pT20 flxR ordC flxNoWrap">
-         <button className="button rltv wishBtn round colorBBlack mR20 mR10Xs">
+         <button className="button rltv wishBtn round colorBBlack mR20 mR10Xs"
+                 onClick={()=>{
+                   addCart({
+                       price: data?.data?.price,
+                       coin: 'USD',
+                       qty: 1,
+                       stk: data?.data?.stock,
+                       name: data?.data?.name,
+                       id: data?.id,
+                       img: data?.data?.images[0],
+                    });
+                 }}
+                 >
            <CartIcon className="s30 posC abs mAuto anim3 colorSvgWhite" />
          </button>
          <button onClick={()=>{nav(`product/${data?.id}`)}} className="button colorBBlack colorWhite cursor moreBtn">View More</button>
