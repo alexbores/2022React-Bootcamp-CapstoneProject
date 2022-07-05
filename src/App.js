@@ -17,6 +17,7 @@ import Home from './pages/Home/Home';
 import Products from './pages/Products/Products';
 import Product from './pages/Product/Product';
 import Search from './pages/Search/Search';
+import Cart from './pages/Cart/Cart';
 
 // import featureProducts from "./mocks/en-us/featured-products.json";
 // import featureBanners from "./mocks/en-us/featured-banners.json";
@@ -35,20 +36,62 @@ function App() {
   // const [pagePath,setPagePath] = useState(-1);
   const [pageLoader,setPageLoader] = useState(0);
   const [initPage,setInitPage] = useState(2);
+  const [cart,setCart] = useState([]);
   
 
   const dataBanners = useFeaturedBanners();
   const dataFeaturedProducts = useFeaturedProducts();
   const dataCategories = useCategories();
+  
 
-
+  // console.log(dataCategories);
 
   useEffect(()=>{
     loadPage();
   },[dataBanners]);
   
 
+  function getLink(data){
+        const path = window.location.pathname;
+        const queryString = window.location.search;
+        const params = new URLSearchParams(queryString);
+        let url = window.location.pathname;
 
+        if(!data){
+          return url+queryString;
+        }
+
+        let first = true;
+        function getJoin(){
+            if(first){
+              first = false;
+              return '?';
+            }
+            else{
+              return '&';
+            }
+        }
+        let found = false;
+        
+        for(let entry of params.entries()) {
+          if(Object.keys(data)[0] === entry[0]  ){
+            if(data[Object.keys(data)[0]] !== ''){
+              url += `${getJoin()}${entry[0]}=${data[Object.keys(data)[0]]}`;
+            }
+            found = true;
+          }
+          else{
+            url += `${getJoin()}${entry[0]}=${entry[1]}`;
+          }
+        }
+
+        if(!found){
+          url += `${getJoin()}${Object.keys(data)[0]}=${data[Object.keys(data)[0]]}`;
+        }
+
+
+        return url;
+    }
   
   function loadPage(){
     setInitPage(2);
@@ -60,29 +103,60 @@ function App() {
     }, 1000);
   }
 
-  function nav(path){
-    window.scrollTo({
-         top: 0,
-         behavior: 'smooth',
-    });
-    setPageLoader(2);
+  function nav(path,show=true){
+    if(show){
+      window.scrollTo({
+           top: 0,
+           behavior: 'smooth',
+      });
+      setPageLoader(2);
+    }
     history(path);
-    setTimeout(() => {
-      setPageLoader(1);
+    if(show){
       setTimeout(() => {
-       setPageLoader(0);
-      }, 500);
-    }, 2000);
+        setPageLoader(1);
+        setTimeout(() => {
+         setPageLoader(0);
+        }, 500);
+      }, 2000);
+    }
   }
 
   
+  function addCart(data){
+     let tempData = [...cart];
+     let found = false;
+     console.log(data);
+     if(data?.id){
+       tempData.map(p => {
+         if(p.id === data.id){
+           p.qty = parseInt(p.qty) + parseInt(data.qty);
+           found = true;
+         }
+       });
+       if(!found){
+         tempData.push(data);
+       }
+     }
+     setCart(tempData);
+  }
 
+  useEffect(()=>{
+    console.log(cart);
+  },[cart]);
+  // function removeCart(data){
+  //    tempData = [...cart];
+  //    if(data.id){
+
+  //    }
+  //    setCart(tempData);
+  // }
 
   return (
     <>
       <Global />
 
-      <Header nav={nav} />
+      <Header nav={nav} cart={cart} />
 
       <PageLoader show={initPage} fixed={true} />
       
@@ -91,10 +165,11 @@ function App() {
         {/*{getPage(pagePath)}*/}
         <Routes>
           <Route path="/home" element={<Navigate replace to="/" />} />
-          <Route path="/" element={<Home banners={dataBanners} products={dataFeaturedProducts} categories={dataCategories} nav={nav} />}/>
-          <Route path="products" element={<Products  categories={dataCategories} nav={nav} />}/>
-          <Route path="product/:id" element={<Product nav={nav} products={dataFeaturedProducts} />}/>
-          <Route path="search" element={<Search nav={nav} />} />
+          <Route path="/" element={<Home addCart={addCart} getLink={getLink} banners={dataBanners} products={dataFeaturedProducts} categories={dataCategories} nav={nav} getLink={getLink}/>}/>
+          <Route path="products" element={<Products addCart={addCart} getLink={getLink} categories={dataCategories} nav={nav} />}/>
+          <Route path="product/:id" element={<Product addCart={addCart} nav={nav} products={dataFeaturedProducts} />}/>
+          <Route path="search" element={<Search addCart={addCart} nav={nav} getLink={getLink} />} />
+          <Route path="cart" element={<Cart cart={cart} nav={nav} getLink={getLink} />} />
           <Route path="*" element={<h2 className="txtC txtS1 pT80 pB80">404</h2>} />
         </Routes> 
       </main>

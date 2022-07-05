@@ -21,11 +21,11 @@ export function useSearch({qWord,page}) {
     async function getSearch({qWord,page}) {
       try {
         setSearch({ data: {}, isLoading: true });
-        let type= encodeURIComponent(`[[at(document.type, "product")]]`);
-        let search = encodeURIComponent(`[[fulltext(document, "${qWord}")]]`);
+        let type= `&q=${encodeURIComponent(`[[at(document.type, "product")]]`)}`;
+        let search = (qWord)? `&q=${encodeURIComponent(`[[fulltext(document, "${qWord}")]]`)}` : '';
         let paged = (page)? page : 1;
         const response = await fetch(
-           `${API_BASE_URL}/documents/search?ref=${apiRef}&q=${type}&q=${search}&lang=en-us&pageSize=12&page=${paged}`,
+           `${API_BASE_URL}/documents/search?ref=${apiRef}${type}${search}&lang=en-us&pageSize=12&page=${paged}`,
           {
             signal: controller.signal,
           }

@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router-dom";
 
 
 
-export default function Search({nav}){
+export default function Search({nav,getLink,addCart}){
 
    const [searchParams] = useSearchParams();
    const qWord = searchParams.get('q');
@@ -43,9 +43,9 @@ export default function Search({nav}){
             <SearchBar nav={nav} />
           </div>
           
-          <ProductsList products={products?.data} nav={nav}  />
+          <ProductsList addCart={addCart} products={products?.data} nav={nav} getLink={getLink} />
 
-          <Pagination data={products?.data} nav={nav} />
+          <Pagination data={products?.data} nav={nav} getLink={getLink}/>
 
        </section>
 	);

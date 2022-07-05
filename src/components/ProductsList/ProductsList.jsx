@@ -2,24 +2,33 @@ import React, {useEffect, useState} from 'react';
 
 import {ProductsHolder} from './ProductsList.styled';
 import ProductCard from '../ProductCard/ProductCard';
+import PageLoader from '../PageLoader/PageLoader';
+
+import { useSearchParams } from "react-router-dom";
 
 
 
 
-
-export default function ProductsList({products,title,categories,initCat,nav}){
+export default function ProductsList({products,loading,title,categories,nav,getLink}){
   // console.log(categories);
   // console.log(products);
+
+  const [searchParams] = useSearchParams();
   
   const [allProds, setAllProds] = useState([]);
   const [selectedCats, setSelectedCats] = useState([]);
 
+  const initCats = searchParams.get('category');
+
+  let pageLoaded = false;
+
 
   useEffect(()=>{
-    // console.log((products));
+    // console.log(products);
+    // console.log(loading);
     let tempAllProds = (products?.results)? [...products.results] : [];
+
     tempAllProds.forEach(p=>{
-       p.selected = true
        if(p.data?.main_image){
         p.data.mainimage = p.data.main_image;
        }
@@ -28,81 +37,61 @@ export default function ProductsList({products,title,categories,initCat,nav}){
        }
     });
 
-    // console.log(selectedCats);
+    setAllProds(tempAllProds);
 
-    if(initCat){
-      let tempSelectedCats = [];
-      if(tempSelectedCats.includes(initCat)){
-       tempSelectedCats = tempSelectedCats.filter(s=>{
-        return (s !== initCat);
-       });
-      }
-      else{
-       tempSelectedCats.push(initCat);
+    // console.log(initCats);
+    
+    setSelectedCats(getNewCats(initCats,[...selectedCats]));
+
+    pageLoaded = true;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[products,searchParams]);
+
+
+
+  
+  function getNewCats(catList,currentCats){
+    let currentCatsList = [...currentCats];
+    if(catList){
+      
+      let cats = catList?.split(",");
+      for(let c of cats){
+        // c = c.toLowerCase();
+        if(currentCatsList?.includes(c)){
+          currentCatsList = currentCatsList.filter(s=>{
+          return (s !== c);
+         });
+        }
+        else{
+         currentCatsList.push(c);
+        }
       }
       
-      tempAllProds?.forEach(p=>{
-        p.selected = (tempSelectedCats.length>0) ? 
-                       ( (tempSelectedCats.includes(p?.data?.category?.slug?.toLowerCase())) ? true : false) : 
-                       true;
-      });
-
-      setSelectedCats(tempSelectedCats);
+      
     }
-
-    if(selectedCats?.length>0){
-       tempAllProds?.forEach(p=>{
-         p.selected = (selectedCats.length>0) ? 
-                        ( (selectedCats.includes(p?.data?.category?.slug?.toLowerCase())) ? true : false) : 
-                        true;
-       });
-    }
-
-
-    setAllProds(tempAllProds);
-
-    
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[products]);
-
-  
-  
+    return currentCatsList;
+  }
  
   function toggleSelectedCat(name){
-    let tempSelectedCats = [...selectedCats];
-
-    let catName = name.toLowerCase();
-
-    if(tempSelectedCats.includes(catName)){
-     tempSelectedCats = tempSelectedCats.filter(s=>{
-      return (s !== catName);
-     });
-    }
-    else{
-     tempSelectedCats.push(catName);
-    }
-    
-    let tempAllProds = [...allProds];
-    tempAllProds?.forEach(p=>{
-      p.selected = (tempSelectedCats.length>0) ? 
-                     ( (tempSelectedCats.includes(p?.data?.category?.slug?.toLowerCase())) ? true : false) : 
-                     true;
-    });
-
-    
-    setAllProds(tempAllProds);
-    setSelectedCats(tempSelectedCats);
+    let catList = getNewCats(name,[...selectedCats]);
+    setSelectedCats(catList);
+    updateCategoryUrl(catList);
   }
 
-
   function clearFilters(){
-    let tempAllProds = [...allProds];
-    tempAllProds?.forEach(p=>{
-      p.selected = true;
-    });
-    setAllProds(tempAllProds);
     setSelectedCats([]);
+    removeCatsUrl();
+  }
+
+  function updateCategoryUrl(catList){
+    let cats = catList;
+    let link = getLink({"category":(cats?.length > 0)? cats : ''});
+    
+
+    nav(link,false);
+  }
+  function removeCatsUrl(){
+    nav(getLink({"category":''}),false);
   }
 
 	return (
@@ -121,22 +110,23 @@ export default function ProductsList({products,title,categories,initCat,nav}){
               {categories?.map(cat=>{
                 return <h4 key={cat?.id} 
                            className={"cat cursor mT20 mB5 "+
-                                      ((selectedCats.includes(cat?.slugs[0].toLowerCase())) && 'selected')}
-                           onClick={()=>{toggleSelectedCat(cat?.slugs[0])}}>{cat?.data?.name}</h4>
+                                      ((selectedCats.includes(cat?.id)) && 'selected')}
+                           onClick={()=>{toggleSelectedCat(cat?.id)}}>{cat?.data?.name}</h4>
               })}
 
               {(selectedCats.length>0)? 
                 <p className="txtS5 cursor mT25 mB5" role="button" onClick={()=>{clearFilters();}}>Clear Filter</p>:''}
            </div>
          }
-         <div className="col2 flxR flxGrd">
-           {allProds.filter(product=>product.selected)?.map(product=>{
+         <div className="col2 flxR flxGrd rltv">
+           {allProds.map(product=>{
              return <ProductCard key={product.id} data={product} nav={nav} />;
             })}
-           {(allProds.filter(product=>product.selected).length === 0) ? 
+           {(allProds.length === 0 && !!loading === false) ? 
             <h4 className="flxCellFull txtC mT60 mB60">No Products Found</h4> : ''}
-
-            
+           {(!!loading) ?
+            <PageLoader show={2}  /> : ''}
+          
          </div>
        </div>
        

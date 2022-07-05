@@ -10,11 +10,12 @@ import { useSearchParams } from "react-router-dom";
 import {useProducts} from "../../utils/hooks/useProducts.js";
 
 
-export default function Products({categories,nav}){
+export default function Products({categories,nav,getLink,addCart}){
 
    const [searchParams] = useSearchParams();
    const page = searchParams.get('page');
-   const dataProducts = useProducts(page);
+   const qWord = searchParams.get('category');
+   const dataProducts = useProducts({page,qWord});
    const [products,setProducts] = useState();
 
    useEffect(()=>{
@@ -24,8 +25,7 @@ export default function Products({categories,nav}){
 
 
    useEffect(()=>{
-      setProducts(products?.reFetch(page));
-      console.log();
+      setProducts(products?.reFetch({page,qWord}));
    },[searchParams]);
 
 
@@ -38,9 +38,9 @@ export default function Products({categories,nav}){
        	    <h1 className="txtC colorWhite">All Products</h1>
           </div>
           
-          <ProductsList products={products?.data} nav={nav} categories={categories?.data?.results} initCat={searchParams.get('category')} />
+          <ProductsList addCart={addCart} products={products?.data} loading={dataProducts?.isLoading} getLink={getLink} nav={nav} categories={categories?.data?.results}  />
           
-          <Pagination data={products?.data} nav={nav}/>
+          <Pagination data={products?.data} nav={nav} getLink={getLink} />
        </section>
 	);
 }

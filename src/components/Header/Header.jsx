@@ -10,7 +10,7 @@ import {ReactComponent as MenuIcon} from '../../assets/menu.svg';
 import {ReactComponent as CloseIcon} from '../../assets/close.svg';
 
 
-export default function Header({nav}){
+export default function Header({nav,cart}){
     
     const [smallMenu,setSmallMenu] = useState(false);
     const [searchMenu,setSearchMenu] = useState(false);
@@ -45,8 +45,8 @@ export default function Header({nav}){
        				<SearchIcon className="s30 s25Xs cursor" onClick={()=>{setSearchMenu(!searchMenu)}}/>
        			</div>
        			<div className="option mL30 mL20Xs cartIcon rltv">
-       				<CartIcon className="s30 s25Xs  cursor" />
-       				<p className="flxC ordC num abs mAuto s15 txtS6 colorTWhite colorBBlack  round">1</p>
+       				<CartIcon className="s30 s25Xs  cursor" onClick={()=>{nav('cart')}} />
+       				<p className="flxC ordC num abs mAuto s15 txtS6 colorTWhite colorBBlack  round">{cart?.length}</p>
        			</div>
        			<div className="option mL30 mL20Xs menuIcon showSm">
        				<MenuIcon className="s30 s25Xs  cursor" onClick={()=>{setSmallMenu(!smallMenu)}}/>
