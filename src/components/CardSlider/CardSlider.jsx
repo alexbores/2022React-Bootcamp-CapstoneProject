@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 
 
 
-export default function CardSlider({cards,title}){
+export default function CardSlider({cards,title,nav}){
     
 
 	return (
@@ -35,7 +35,7 @@ export default function CardSlider({cards,title}){
              },
            }}>
            {cards?.map(card=>{
-            return <SwiperSlide key={card.id}>
+            return <SwiperSlide key={card.id} className="cursor" onClick={()=>{nav(`products?category=${card?.slugs[0]}`)}}>
                        <img src={card?.data?.main_image?.url} 
                             alt={card?.data?.main_image?.title} />
                        <h4 className="txtC">{card?.data?.name}</h4>
