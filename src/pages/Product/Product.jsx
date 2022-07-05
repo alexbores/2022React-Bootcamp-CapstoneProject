@@ -11,7 +11,7 @@ import {useProduct} from "../../utils/hooks/useProduct.js";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 
 
-export default function Product({nav,products}){
+export default function Product({nav,products,addCart}){
 
    const [productInfo, setProductInfo] = useState(null);
    const [sellInfo, setSellInfo] = useState({
@@ -19,6 +19,9 @@ export default function Product({nav,products}){
       coin: 'USD',
       qty: 1,
       stk: 0,
+      name: '',
+      id: null,
+      imgs: null,
    });
    const qtyRef = useRef();
 
@@ -34,6 +37,9 @@ export default function Product({nav,products}){
      let tempSell = {...sellInfo}
      tempSell.price = temp?.data?.price;
      tempSell.stk = temp?.data?.stock;
+     tempSell.name = temp?.data?.name;
+     tempSell.imgs = temp?.data?.images;
+     tempSell.id = temp?.id;
 
      setProductInfo(temp);
      setSellInfo(tempSell);
@@ -48,7 +54,6 @@ export default function Product({nav,products}){
       if(parseInt(qtyRef?.current?.value) > tempSell.stk){
          return;
       }
-      tempSell.price = productInfo?.data?.price *qtyRef?.current?.value;
       tempSell.qty = qtyRef?.current?.value;
 
       setSellInfo(tempSell);
@@ -81,14 +86,15 @@ export default function Product({nav,products}){
                 {(productInfo?.data?.category?.tags.length > 0)? productInfo?.data?.category?.tags.map(t=>
                    <p className="txtS4 pT10 txtCap">Tags: {t?.slug}</p>)
                    :''}
-                <p className="txtS2 pT40 "><strong className="fontTitle">${sellInfo?.price}</strong> USD</p>
+                <p className="txtS2 pT40 "><strong className="fontTitle">${sellInfo?.price*sellInfo?.qty}</strong> USD</p>
                 <div className="qtySelector pT20 flxR ordC flxNoWrap">
                    <p className="pR5">Qty: </p>
                    <input type="number" ref={qtyRef} min="1" max={sellInfo?.stk} onChange={()=>{updateQty()}} className="qty txtC" />
                 </div>
 
 
-                <button className="button colorBBlack colorWhite mT40 wMax300">Add To Cart</button>
+                <button className="button colorBBlack colorWhite mT40 wMax300" 
+                        onClick={()=>{addCart(sellInfo)}}>Add To Cart</button>
 
 
                 

@@ -8,7 +8,7 @@ import ProductsList from '../../components/ProductsList/ProductsList';
 
 // import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 
-export default function Home({banners,categories,products,nav}){
+export default function Home({banners,categories,products,nav,getLink,addCart}){
 
    
 
@@ -20,7 +20,7 @@ export default function Home({banners,categories,products,nav}){
           
            <CardSlider  cards={categories?.data?.results} nav={nav} title='Categories' />
 
-           <ProductsList products={products?.data} nav={nav} title='Best Buys' />
+           <ProductsList addCart={addCart} products={products?.data} nav={nav} title='Best Buys' getLink={getLink} />
        	  
            <div className="content flxR ordC mT60 mB60">
             <button className="button colorBBlack colorWhite cursor wMax300" 

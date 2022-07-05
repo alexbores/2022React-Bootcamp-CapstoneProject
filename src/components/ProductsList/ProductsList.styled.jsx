@@ -2,12 +2,13 @@ import styled from 'styled-components';
 
 
 export const ProductsHolder = styled.section`
-   
+
    .col1{
       width: 20%;
    }
    .col2{
    	max-width: calc(${props => props.hasCat ? '80%' : '100%'} + var(--mnr-padSides));
+      min-height: 200px;
    }
    
    .col1{ 
