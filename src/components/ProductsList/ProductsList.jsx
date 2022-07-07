@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 
 
 
-export default function ProductsList({products,loading,title,categories,nav,getLink}){
+export default function ProductsList({products,loading,title,categories,nav,getLink,addCart}){
   // console.log(categories);
   // console.log(products);
 
@@ -120,7 +120,7 @@ export default function ProductsList({products,loading,title,categories,nav,getL
          }
          <div className="col2 flxR flxGrd rltv">
            {allProds.map(product=>{
-             return <ProductCard key={product.id} data={product} nav={nav} />;
+             return <ProductCard key={product.id} data={product} nav={nav} addCart={addCart} />;
             })}
            {(allProds.length === 0 && !!loading === false) ? 
             <h4 className="flxCellFull txtC mT60 mB60">No Products Found</h4> : ''}
