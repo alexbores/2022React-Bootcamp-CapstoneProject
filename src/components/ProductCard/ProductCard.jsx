@@ -1,14 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {ProductHolder} from './ProductCard.styled';
 import {ReactComponent as CartIcon} from '../../assets/cart.svg';
 
+import { AppContext } from "../../App.js";
 
+export default function ProductCard({data}){
 
-export default function ProductCard({data,nav,addCart}){
-  // console.log(data.tags.map());
-  
-  // console.log(data);
+  const Utils = useContext(AppContext);
 
 	return (
      <ProductHolder className="productCard round6 p20 pL5Xs pR5Xs pB10Xs">
@@ -29,7 +28,7 @@ export default function ProductCard({data,nav,addCart}){
        <div className="buttonsHolder pT20 flxR ordC flxNoWrap">
          <button className="button rltv wishBtn round colorBBlack mR20 mR10Xs"
                  onClick={()=>{
-                   addCart({
+                   Utils.addCart({
                        price: data?.data?.price,
                        coin: 'USD',
                        qty: 1,
@@ -42,7 +41,7 @@ export default function ProductCard({data,nav,addCart}){
                  >
            <CartIcon className="s30 posC abs mAuto anim3 colorSvgWhite" />
          </button>
-         <button onClick={()=>{nav(`product/${data?.id}`)}} className="button colorBBlack colorWhite cursor moreBtn">View More</button>
+         <button onClick={()=>{Utils.nav(`product/${data?.id}`)}} className="button colorBBlack colorWhite cursor moreBtn">View More</button>
        </div>
        
      </ProductHolder>

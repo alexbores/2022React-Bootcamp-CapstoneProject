@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState ,useContext} from 'react';
 
 import {ProductsHolder} from './ProductsList.styled';
 import ProductCard from '../ProductCard/ProductCard';
@@ -6,12 +6,14 @@ import PageLoader from '../PageLoader/PageLoader';
 
 import { useSearchParams } from "react-router-dom";
 
+import { AppContext } from "../../App.js";
 
 
-
-export default function ProductsList({products,loading,title,categories,nav,getLink,addCart}){
+export default function ProductsList({products,loading,title,categories}){
   // console.log(categories);
   // console.log(products);
+
+  const Utils = useContext(AppContext);
 
   const [searchParams] = useSearchParams();
   
@@ -85,13 +87,13 @@ export default function ProductsList({products,loading,title,categories,nav,getL
 
   function updateCategoryUrl(catList){
     let cats = catList;
-    let link = getLink({"category":(cats?.length > 0)? cats : ''});
+    let link = Utils.getLink({"category":(cats?.length > 0)? cats : ''});
     
 
-    nav(link,false);
+    Utils.nav(link,false);
   }
   function removeCatsUrl(){
-    nav(getLink({"category":''}),false);
+    Utils.nav(Utils.getLink({"category":''}),false);
   }
 
 	return (
@@ -120,7 +122,7 @@ export default function ProductsList({products,loading,title,categories,nav,getL
          }
          <div className="col2 flxR flxGrd rltv">
            {allProds.map(product=>{
-             return <ProductCard key={product.id} data={product} nav={nav} addCart={addCart} />;
+             return <ProductCard key={product.id} data={product} />;
             })}
            {(allProds.length === 0 && !!loading === false) ? 
             <h4 className="flxCellFull txtC mT60 mB60">No Products Found</h4> : ''}

@@ -1,21 +1,20 @@
-import React, {useRef} from 'react';
+import React, {useRef,useContext} from 'react';
 
 import {SearchBarHolder} from './SearchBar.styled';
 
 import {ReactComponent as SearchIcon} from '../../assets/search.svg';
 
-// import { useLocation } from 'react-router-dom'
+import { AppContext } from "../../App.js";
 
-
-export default function SearchBar({nav, callback}){
+export default function SearchBar({callback}){
     const searchInput = useRef();
 
-    // console.log(location.pathname);
+    const Utils = useContext(AppContext);
     
     function sendSearch(e){
         e?.preventDefault();
         if(searchInput.current.value){
-           nav(`search?q=${searchInput.current.value}`);
+           Utils.nav(`search?q=${searchInput.current.value}`);
            searchInput.current.value = '';
            if(callback){
              callback();

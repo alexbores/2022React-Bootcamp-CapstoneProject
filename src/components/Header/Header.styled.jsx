@@ -32,11 +32,18 @@ export const Menu = styled.section`
 
   }
 
-  @media screen and (max-width:630px){
+  .options .option.menuIcon{
+      display: none;
+  }
+
+  @media screen and (max-width:720px){
     .options{
       p.option{
         display:none;
       }
+    }
+    .options .option.menuIcon{
+       display: flex;
     }
   }
 

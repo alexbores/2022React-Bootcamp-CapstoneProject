@@ -1,14 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {SliderHolder} from './CardSlider.styled';
 
 
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 
+import { AppContext } from "../../App.js";
 
 
-export default function CardSlider({cards,title,nav}){
-    
+export default function CardSlider({cards,title}){
+
+  const Utils = useContext(AppContext);  
 
 	return (
      <SliderHolder className="mT60">
@@ -35,7 +37,7 @@ export default function CardSlider({cards,title,nav}){
              },
            }}>
            {cards?.map(card=>{
-            return <SwiperSlide key={card.id} className="cursor" onClick={()=>{nav(`products?category=${card?.id}`)}}>
+            return <SwiperSlide key={card.id} className="cursor" onClick={()=>{Utils.nav(`products?category=${card?.id}`)}}>
                        <img src={card?.data?.main_image?.url} 
                             alt={card?.data?.main_image?.title} />
                        <h4 className="txtC">{card?.data?.name}</h4>
