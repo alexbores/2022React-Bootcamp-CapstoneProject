@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 // import { Link } from 'react-router-dom';
 
 import MainBanner from '../../components/MainBanner/MainBanner';
 import CardSlider from '../../components/CardSlider/CardSlider';
 import ProductsList from '../../components/ProductsList/ProductsList';
 
+import {AppContext} from '../../App.js'
 
 // import { useFeaturedBanners } from '../../utils/hooks/useFeaturedBanners';
 
-export default function Home({banners,categories,products,nav,getLink,addCart}){
+export default function Home({banners,categories,products}){
 
-   
+   const Utils = useContext(AppContext);
 
 	return (
 
@@ -18,13 +19,13 @@ export default function Home({banners,categories,products,nav,getLink,addCart}){
        	  
        	  <MainBanner banners={banners?.data?.results} />
           
-           <CardSlider  cards={categories?.data?.results} nav={nav} title='Categories' />
+           <CardSlider  cards={categories?.data?.results} title='Categories' />
 
-           <ProductsList addCart={addCart} products={products?.data} nav={nav} title='Best Buys' getLink={getLink} />
+           <ProductsList products={products?.data} title='Best Buys'  />
        	  
            <div className="content flxR ordC mT60 mB60">
             <button className="button colorBBlack colorWhite cursor wMax300" 
-                     onClick={()=>{nav('products')}} >View All Products</button>
+                     onClick={()=>{Utils.nav('products')}} >View All Products</button>
            </div>
 
        </section>

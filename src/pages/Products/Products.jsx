@@ -5,12 +5,12 @@ import Pagination from '../../components/Pagination/Pagination';
 
 import { useSearchParams } from "react-router-dom";
 
-
-
 import {useProducts} from "../../utils/hooks/useProducts.js";
 
 
-export default function Products({categories,nav,getLink,addCart}){
+
+export default function Products({categories}){
+
 
    const [searchParams] = useSearchParams();
    const page = searchParams.get('page');
@@ -38,9 +38,9 @@ export default function Products({categories,nav,getLink,addCart}){
        	    <h1 className="txtC colorWhite">All Products</h1>
           </div>
           
-          <ProductsList addCart={addCart} products={products?.data} loading={dataProducts?.isLoading} getLink={getLink} nav={nav} categories={categories?.data?.results}  />
+          <ProductsList products={products?.data} loading={dataProducts?.isLoading}  categories={categories?.data?.results}  />
           
-          <Pagination data={products?.data} nav={nav} getLink={getLink} />
+          <Pagination data={products?.data} />
        </section>
 	);
 }

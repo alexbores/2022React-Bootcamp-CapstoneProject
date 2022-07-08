@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef ,useContext} from 'react';
 
 import ProductsList from '../../components/ProductsList/ProductsList';
 
@@ -10,8 +10,11 @@ import {useProduct} from "../../utils/hooks/useProduct.js";
 
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 
+import { AppContext } from "../../App.js";
 
-export default function Product({nav,products,addCart}){
+export default function Product({products}){
+
+   const Utils = useContext(AppContext);
 
    const [productInfo, setProductInfo] = useState(null);
    const [sellInfo, setSellInfo] = useState({
@@ -86,7 +89,8 @@ export default function Product({nav,products,addCart}){
                 {(productInfo?.data?.category?.tags.length > 0)? productInfo?.data?.category?.tags.map(t=>
                    <p className="txtS4 pT10 txtCap">Tags: {t?.slug}</p>)
                    :''}
-                <p className="txtS2 pT40 "><strong className="fontTitle">${sellInfo?.price*sellInfo?.qty}</strong> USD</p>
+                <p className="txtS2 pT40 "><strong className="fontTitle">
+                ${ (Math.round( (sellInfo?.price*sellInfo?.qty)*100 )/100).toFixed(2) }</strong> USD</p>
                 <div className="qtySelector pT20 flxR ordC flxNoWrap">
                    <p className="pR5">Qty: </p>
                    <input type="number" ref={qtyRef} min="1" max={sellInfo?.stk} onChange={()=>{updateQty()}} className="qty txtC" />
@@ -94,7 +98,7 @@ export default function Product({nav,products,addCart}){
 
 
                 <button className="button colorBBlack colorWhite mT40 wMax300" 
-                        onClick={()=>{addCart(sellInfo); nav('cart')}}>Add To Cart</button>
+                        onClick={()=>{Utils.addCart(sellInfo); Utils.nav('cart')}}>Add To Cart</button>
 
 
                 
@@ -118,10 +122,10 @@ export default function Product({nav,products,addCart}){
        </ProductHolder>
 
        <section>
-          <ProductsList products={products?.data} nav={nav} title='Best Buys' />
+          <ProductsList products={products?.data}  title='Best Buys' />
           <div className="content flxR ordC mT60 mB60">
             <button className="button colorBBlack colorWhite cursor wMax300" 
-                     onClick={()=>{nav('products')}} >View All Products</button>
+                     onClick={()=>{Utils.nav('products')}} >View All Products</button>
            </div>
        </section>
        </>

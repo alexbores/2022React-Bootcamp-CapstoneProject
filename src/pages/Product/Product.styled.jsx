@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 
 export const ProductHolder = styled.section`
-   padding: 60px;
+   padding-top: 60px;
    
 
    .col1{
@@ -29,6 +29,24 @@ export const ProductHolder = styled.section`
       .qty{
          width:100px;
       }
+   }
+
+   @media screen and (max-width: 630px){
+     .col1,
+     .col2{
+       width: 100%;
+     }
+     .col1{
+      .mySwiper img{
+        max-height: auto;
+        object-fit: contain;
+        width:100%;
+      }
+     }
+     .col2{
+      padding-left: 0px;
+      padding-top: 40px;
+     }
    }
 
 

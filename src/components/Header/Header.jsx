@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import {Menu, SmallMenu, SearchMenu} from './Header.styled';
 
@@ -9,11 +9,15 @@ import {ReactComponent as SearchIcon} from '../../assets/search.svg';
 import {ReactComponent as MenuIcon} from '../../assets/menu.svg';
 import {ReactComponent as CloseIcon} from '../../assets/close.svg';
 
+import { AppContext } from "../../App.js";
 
-export default function Header({nav,cart}){
+
+export default function Header({cart}){
     
     const [smallMenu,setSmallMenu] = useState(false);
     const [searchMenu,setSearchMenu] = useState(false);
+
+    const Utils = useContext(AppContext);
 
     const menu = [
        {name:"Home",path:"/"},
@@ -23,7 +27,7 @@ export default function Header({nav,cart}){
     
     function Option({data}){
         return (
-           <p className="option mL30 txtS3 cursor" onClick={()=>{nav(data.path)}}>{data.name}</p>
+           <p className="option mL30 txtS3 cursor" onClick={()=>{Utils.nav(data.path)}}>{data.name}</p>
         );
     }
 
@@ -33,7 +37,7 @@ export default function Header({nav,cart}){
        	<div className="content fullContent flxR ordC flxNoWrap">
        		<div className="logoHolder flxR ordS itmC">
        		   <h1 className="logo txtS2 txtS3Sm" 
-                   onClick={()=>{nav('/')}}>Alex's <span>WorkShop</span></h1>
+                   onClick={()=>{Utils.nav('/')}}>Alex's <span>WorkShop</span></h1>
        		</div>
 
        		<div className="options wFull flxR flxNoWrap ordE itmC">
@@ -45,10 +49,10 @@ export default function Header({nav,cart}){
        				<SearchIcon className="s30 s25Xs cursor" onClick={()=>{setSearchMenu(!searchMenu)}}/>
        			</div>
        			<div className="option mL30 mL20Xs cartIcon rltv">
-       				<CartIcon className="s30 s25Xs  cursor" onClick={()=>{nav('cart')}} />
+       				<CartIcon className="s30 s25Xs  cursor" onClick={()=>{Utils.nav('cart')}} />
        				<p className="flxC ordC num abs mAuto s15 txtS6 colorTWhite colorBBlack  round">{cart?.length}</p>
        			</div>
-       			<div className="option mL30 mL20Xs menuIcon showSm">
+       			<div className="option mL30 mL20Xs menuIcon">
        				<MenuIcon className="s30 s25Xs  cursor" onClick={()=>{setSmallMenu(!smallMenu)}}/>
        			</div>
        		</div>
@@ -96,7 +100,7 @@ export default function Header({nav,cart}){
                  </div>
               </div>
               <p className="txtC txtS2 mT10 mB20 fontTitle">Search:</p>
-              <SearchBar  nav={nav} callback={()=>{setSearchMenu(false)}}/>
+              <SearchBar  callback={()=>{setSearchMenu(false)}}/>
            </div>
            
        </SearchMenu>

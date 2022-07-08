@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';  
+import React, {useState, useEffect, createContext} from 'react';  
 import { Routes, Route, Navigate, useNavigate} from 'react-router-dom';
 import './App.css';
 // import './style.css';
@@ -18,6 +18,7 @@ import Products from './pages/Products/Products';
 import Product from './pages/Product/Product';
 import Search from './pages/Search/Search';
 import Cart from './pages/Cart/Cart';
+import Checkout from './pages/Checkout/Checkout';
 
 // import featureProducts from "./mocks/en-us/featured-products.json";
 // import featureBanners from "./mocks/en-us/featured-banners.json";
@@ -30,6 +31,8 @@ import {useFeaturedProducts} from "./utils/hooks/useFeaturedProducts.js";
 
 import {useCategories} from "./utils/hooks/useCategories.js";
 
+
+export const AppContext = createContext();
 
 function App() {
   const history = useNavigate();
@@ -50,8 +53,20 @@ function App() {
     loadPage();
   },[dataBanners]);
   
+  function loadPage(){
+    setInitPage(2);
+    setTimeout(() => {
+      setInitPage(1);
+      setTimeout(() => {
+       setInitPage(0);
+      }, 200);
+    }, 500);
+  }
 
-  function getLink(data){
+  
+
+  const Utils = {
+    getLink: function(data){
         const path = window.location.pathname;
         const queryString = window.location.search;
         const params = new URLSearchParams(queryString);
@@ -91,47 +106,36 @@ function App() {
 
 
         return url;
-    }
-  
-  function loadPage(){
-    setInitPage(2);
-    setTimeout(() => {
-      setInitPage(1);
-      setTimeout(() => {
-       setInitPage(0);
-      }, 200);
-    }, 1000);
-  }
-
-  function nav(path,show=true){
-    if(show){
-      window.scrollTo({
-           top: 0,
-           behavior: 'smooth',
-      });
-      setPageLoader(2);
-    }
-    history(path);
-    if(show){
-      setTimeout(() => {
-        setPageLoader(1);
+    },
+    nav: function(path,show=true){
+      if(show){
+        window.scrollTo({
+             top: 0,
+             behavior: 'smooth',
+        });
+        setPageLoader(2);
+      }
+      history(path);
+      if(show){
         setTimeout(() => {
-         setPageLoader(0);
-        }, 500);
-      }, 2000);
-    }
-  }
-
-  
-  function addCart(data){
-    console.log(data);
+          setPageLoader(1);
+          setTimeout(() => {
+           setPageLoader(0);
+          }, 500);
+        }, 2000);
+      }
+    },
+    addCart: function(data){
+     // console.log(data);
      let tempData = [...cart];
      let found = false;
      if(data?.id){
        
        tempData.map(p => {
          if(p.id === data.id){
-           p.qty = parseInt(p.qty) + parseInt(data.qty);
+           p.qty = (!!parseInt(data?.replaceQty))? parseInt(data.replaceQty) : parseInt(p.qty) + parseInt(data.qty);
+           
+
            if(p.qty > p.stock){
              p.qty = p.stock;
            }
@@ -143,12 +147,8 @@ function App() {
        }
      }
      setCart(tempData);
-  }
-
-  // useEffect(()=>{
-  //   console.log(cart);
-  // },[cart]);
-  function removeCart(id){
+    },
+    removeCart: function(id){
      let tempData = [...cart];
      if(id){
        
@@ -159,13 +159,15 @@ function App() {
          return true;
        }));
      }
+    },
   }
 
   return (
     <>
       <Global />
-
-      <Header nav={nav} cart={cart} />
+      
+      <AppContext.Provider value={Utils}>
+      <Header  cart={cart} />
 
       <PageLoader show={initPage} fixed={true} />
       
@@ -174,16 +176,18 @@ function App() {
         {/*{getPage(pagePath)}*/}
         <Routes>
           <Route path="/home" element={<Navigate replace to="/" />} />
-          <Route path="/" element={<Home addCart={addCart} getLink={getLink} banners={dataBanners} products={dataFeaturedProducts} categories={dataCategories} nav={nav} getLink={getLink}/>}/>
-          <Route path="products" element={<Products addCart={addCart} getLink={getLink} categories={dataCategories} nav={nav} />}/>
-          <Route path="product/:id" element={<Product addCart={addCart} nav={nav} products={dataFeaturedProducts} />}/>
-          <Route path="search" element={<Search addCart={addCart} nav={nav} getLink={getLink} />} />
-          <Route path="cart" element={<Cart cart={cart} addCart={addCart} removeCart={removeCart} nav={nav} getLink={getLink} />} />
+          <Route path="/" element={<Home banners={dataBanners} products={dataFeaturedProducts} categories={dataCategories}/>}/>
+          <Route path="products" element={<Products categories={dataCategories} />}/>
+          <Route path="product/:id" element={<Product products={dataFeaturedProducts} />}/>
+          <Route path="search" element={<Search />} />
+          <Route path="cart" element={<Cart cart={cart} />} />
+          <Route path="checkout" element={<Checkout cart={cart} />} />
           <Route path="*" element={<h2 className="txtC txtS1 pT80 pB80">404</h2>} />
         </Routes> 
       </main>
       
       <Footer />
+      </AppContext.Provider>
     </>
   );
 }
